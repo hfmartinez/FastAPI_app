@@ -1,0 +1,25 @@
+
+### `.gitignore`
+
+The `.gitignore` file tells Git which files or directories to ignore in your project. Below is a basic `.gitignore` file for your FastAPI project:
+
+```gitignore
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Docker files
+*.env
+
+# Local configuration
+.env.local
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
