@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: arm64v8/mysql:8.0 # mysql:5.7
+    container_name: mysql-container
+    hostname: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: your_password
+      MYSQL_DATABASE: todo_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist MySQL data
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile # Ensure you have a Dockerfile for the FastAPI app
+    container_name: fastapi-app
+    env_file: .env
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
