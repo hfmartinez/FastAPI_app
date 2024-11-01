@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: arm64v8/mysql:8.0
+          image: arm64v8/mysql:8.0 #replace if needed
+          imagePullPolicy: Always
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: "your_password"

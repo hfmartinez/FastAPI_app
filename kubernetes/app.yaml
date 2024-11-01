@@ -9,8 +9,7 @@ spec:
     requests:
       storage: 1Gi
 
---
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,26 +25,27 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql
-        image: arm64v8/mysql:8.0
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: "your_password"
-        - name: MYSQL_DATABASE
-          value: "todo_db"
-        - name: MYSQL_USER
-          value: "user"
-        - name: MYSQL_PASSWORD
-          value: "password"
-        volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
+        - name: mysql
+          image: arm64v8/mysql:8.0 # replace if needed
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "your_password"
+            - name: MYSQL_DATABASE
+              value: "todo_db"
+            - name: MYSQL_USER
+              value: "user"
+            - name: MYSQL_PASSWORD
+              value: "password"
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-storage
-        persistentVolumeClaim:
-          claimName: mysql-pvc
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
 
---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,7 +56,7 @@ spec:
   selector:
     app: mysql
 
---
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -72,26 +72,27 @@ spec:
         app: fastapi
     spec:
       containers:
-      - name: fastapi
-        image: hfmartinez/fastapi-todo-app
-        ports:
-        - containerPort: 8000
-        envFrom:
-          - configMapRef:
-              name: fastapi-config
-        env:
-        - name: DATABASE_HOST
-          value: "mysql"
-        - name: MYSQL_ROOT_PASSWORD
-          value: root_password
-        - name: MYSQL_DATABASE
-          value: todo_db
-        - name: MYSQL_USER
-          value: user
-        - name: MYSQL_PASSWORD
-          value: password
+        - name: fastapi
+          image: hfmartinez/fastapi-todo-app
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: fastapi-config
+          env:
+            - name: DATABASE_HOST
+              value: "mysql"
+            - name: MYSQL_ROOT_PASSWORD
+              value: root_password
+            - name: MYSQL_DATABASE
+              value: todo_db
+            - name: MYSQL_USER
+              value: user
+            - name: MYSQL_PASSWORD
+              value: password
 
---
+---
 apiVersion: v1
 kind: Service
 metadata:
