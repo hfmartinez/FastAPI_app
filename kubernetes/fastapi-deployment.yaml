@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: hfmartinez/fastapi
+          image: hfmartinez/fastapi-todo-app
           ports:
             - containerPort: 8000
           envFrom:
