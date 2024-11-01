@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi
+spec:
+  selector:
+    matchLabels:
+      app: fastapi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+        - name: fastapi
+          image: hfmartinez/fastapi
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: fastapi-config
+          env:
+            - name: DATABASE_HOST
+              value: "mysql"
+            - name: MYSQL_ROOT_PASSWORD
+              value: root_password
+            - name: MYSQL_DATABASE
+              value: todo_db
+            - name: MYSQL_USER
+              value: user
+            - name: MYSQL_PASSWORD
+              value: password
