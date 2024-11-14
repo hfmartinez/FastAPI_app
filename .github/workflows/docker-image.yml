@@ -20,6 +20,7 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build \
+            --file ./Dockerfile \
             --tag ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-crud:latest \
             --push .
   
