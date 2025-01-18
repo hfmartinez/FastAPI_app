@@ -25,7 +25,7 @@ This is a simple FastAPI application that implements a CRUD (Create, Read, Updat
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/fastapi-todo.git
+git clone https://github.com/hfmartinez/fastapi-todo.git
 cd fastapi-todo
 ```
 
