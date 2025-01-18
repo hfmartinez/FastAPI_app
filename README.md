@@ -26,7 +26,7 @@ This is a simple FastAPI application that implements a CRUD (Create, Read, Updat
 
 ```bash
 git clone https://github.com/hfmartinez/FastAPI_app.git
-cd fastapi-todo
+cd FastAPI_app
 ```
 
 ### Create a `.env` File
