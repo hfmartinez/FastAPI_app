@@ -77,9 +77,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
-          envFrom:
-            - configMapRef:
-                name: fastapi-config
+#          envFrom:
+#            - configMapRef:
+#                name: fastapi-config
           env:
             - name: DATABASE_HOST
               value: "mysql"
@@ -98,9 +98,9 @@ kind: Service
 metadata:
   name: fastapi
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-    - port: 8000
+    - port: 80
       targetPort: 8000
   selector:
     app: fastapi
