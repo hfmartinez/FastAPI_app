@@ -104,3 +104,4 @@ spec:
       targetPort: 8000
   selector:
     app: fastapi
+
