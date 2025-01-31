@@ -60,7 +60,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi
+  name: fastapi-deployment
 spec:
   selector:
     matchLabels:
@@ -96,7 +96,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: fastapi
+  name: fastapi-service
 spec:
   type: NodePort
   ports:
@@ -104,4 +104,3 @@ spec:
       targetPort: 8000
   selector:
     app: fastapi
-

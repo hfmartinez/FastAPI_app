@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_HUB_USER = "hfmartinez"
         DOCKER_IMAGE = "fastapi-app"
-        KUBE_DEPLOYMENT = "fastapi"
-        SERVICE_NAME = "fastapi"
+        KUBE_DEPLOYMENT = "fastapi-deployment"
+        SERVICE_NAME = "fastapi-service"
     }
 
     stages {
