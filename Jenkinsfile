@@ -19,9 +19,10 @@ pipeline {
             steps {
                 script {
                     def IMAGE_TAG = "$DOCKER_HUB_USER/$DOCKER_IMAGE:latest"
-
-                    sh "docker build -t $IMAGE_TAG ."
-                    sh "docker push $IMAGE_TAG"
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        sh "docker build -t $IMAGE_TAG ."
+                        sh "docker push $IMAGE_TAG"
+                    }
                 }
             }
         }
@@ -37,7 +38,6 @@ pipeline {
                     def newVersion = (currentVersion == "blue") ? "green" : "blue"
                     def IMAGE_TAG = "$DOCKER_HUB_USER/$DOCKER_IMAGE:latest"
 
-                    /
                     sh """
                     kubectl apply -f - <<EOF
                     apiVersion: apps/v1
@@ -70,7 +70,7 @@ pipeline {
             }
         }
 
-        stage('Validate Deployment') {
+        stage('Validate deployment') {
             steps {
                 sh "kubectl get pods -o wide"
                 sh "kubectl get svc $SERVICE_NAME"
