@@ -80,6 +80,8 @@ spec:
           # envFrom:
           #   - configMapRef:
           #       name: fastapi-config
+          #   - secretRef:
+          #       name: fastapi-secrets
           env:
             - name: DATABASE_HOST
               value: "mysql"
@@ -104,3 +106,23 @@ spec:
       targetPort: 8000
   selector:
     app: fastapi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastapi-config
+data:
+  DATABASE_HOST: "mysql"
+  MYSQL_DATABASE: "todo_db"
+  MYSQL_USER: "user"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fastapi-secrets
+type: Opaque
+stringData:
+  MYSQL_ROOT_PASSWORD: "root_password"
+  MYSQL_PASSWORD: "password"
