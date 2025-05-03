@@ -10,25 +10,25 @@ spec:
       storage: 1Gi
 
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-spec:
-  selector:
+apiVersion: apps/v1 # Version del Api
+kind: Deployment #Tipo de recurso
+metadata: #Los datos descriptivos o metadata
+  name: mysql #eitquetas de metadata 
+spec: #especificaciones del deployment
+  selector: # etiquetas de seleccion 
     matchLabels:
       app: mysql
-  replicas: 1
-  template:
-    metadata:
+  replicas: 1 # numero de replicas
+  template: # template de los pods!!!
+    metadata: #metadata de los pods!!
       labels:
         app: mysql
-    spec:
-      containers:
-        - name: mysql
-          image: arm64v8/mysql:8.0 # mysql:5.7replace if needed
-          imagePullPolicy: Always
-          env:
+    spec: #Especificacion de los pods!!! -> Informacion de los contenedores 
+      containers: # listado de contenedores
+        - name: mysql #contenedor 1 - nombre
+          image: arm64v8/mysql:8.0 # mysql:5.7replace if needed #imagen
+          imagePullPolicy: Always #Politica de Pulling 
+          env: #variables de entorno
             - name: MYSQL_ROOT_PASSWORD
               value: "your_password"
             - name: MYSQL_DATABASE
@@ -37,74 +37,74 @@ spec:
               value: "user"
             - name: MYSQL_PASSWORD
               value: "password"
-          volumeMounts:
+          volumeMounts: #volumenes
             - name: mysql-storage
               mountPath: /var/lib/mysql
-      volumes:
+      volumes: #volument PVC
         - name: mysql-storage
           persistentVolumeClaim:
             claimName: mysql-pvc
 
 ---
-apiVersion: v1
-kind: Service
-metadata:
+apiVersion: v1 #version de la api
+kind: Service #tipo de elemento
+metadata: #metadata
   name: mysql
-spec:
-  ports:
+spec: #especificaciones del servicio
+  ports: #puerto de interes
     - port: 3306
-  selector:
+  selector: #selector! 
     app: mysql
 
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
+apiVersion: apps/v1 # version ip 
+kind: Deployment #tipo de recurso
+metadata: #metadata
   name: fastapi-deployment
-spec:
-  selector:
+spec: #especificaciones del pod
+  selector: #selector
     matchLabels:
       app: fastapi
-  replicas: 1
-  template:
+  replicas: 2 #replicas
+  template: #template
     metadata:
       labels:
         app: fastapi
-    spec:
-      containers:
-        - name: fastapi
-          image: hfmartinez/fastapi-todo-app
-          imagePullPolicy: Always
+    spec: #especificaciones
+      containers: #container
+        - name: fastapi #nombre
+          image: hfmartinez/fastapi-todo-app #imagen
+          imagePullPolicy: Always #politica de pulling
           ports:
-            - containerPort: 8000
-          # envFrom:
-          #   - configMapRef:
-          #       name: fastapi-config
-          #   - secretRef:
-          #       name: fastapi-secrets
-          env:
-            - name: DATABASE_HOST
-              value: "mysql"
-            - name: MYSQL_ROOT_PASSWORD
-              value: root_password
-            - name: MYSQL_DATABASE
-              value: todo_db
-            - name: MYSQL_USER
-              value: user
-            - name: MYSQL_PASSWORD
-              value: password
+            - containerPort: 8000 #puerto!
+          envFrom:
+            - configMapRef:
+                name: fastapi-config
+            - secretRef:
+                name: fastapi-secrets
+          # env: #variables de entorno
+          #   - name: DATABASE_HOST
+          #     value: "mysql"
+          #   - name: MYSQL_ROOT_PASSWORD
+          #     value: root_password
+          #   - name: MYSQL_DATABASE
+          #     value: todo_db
+          #   - name: MYSQL_USER
+          #     value: user
+          #   - name: MYSQL_PASSWORD
+          #     value: password
 
 ---
-apiVersion: v1
-kind: Service
-metadata:
+apiVersion: v1 #version
+kind: Service #tipo servicio
+metadata: #metadad
   name: fastapi-service
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 8000
-  selector:
+spec: #especificaciones
+  type: NodePort #tipo de servicio
+  ports: #puertos
+    - port: 80 #puerto del servicio!!
+      targetPort: 8000 #puerto del contenedor
+  selector: #selector
     app: fastapi
 
 ---
